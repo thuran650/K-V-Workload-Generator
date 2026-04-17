@@ -763,7 +763,6 @@ int get_choice(long insert_pool_size, long insert_count, long update_count, long
     // std::cout << "choice = " << choice << std::endl;
     switch (choice) {
         case 7: 
-            std::cout << "got to 7";
             if (_point_delete_ttl_count < point_delete_ttl_count && insert_pool_size > 0 && _insert_count >= PD_THRESHOLD * insert_count &&
 			    !(insert_pool_size == 1 && (_update_count < update_count || _point_query_count < point_query_count || (_range_query_count < range_query_count && range_query_selectivity > 0.0) ))) 
                 break;

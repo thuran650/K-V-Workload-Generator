@@ -3,17 +3,21 @@
 #include <random>
 
 int ttl_generator() {
-
     // ttl choices
-    std::vector<int> choices = {7, 30, 365};
+    srand(422);
+    static std::vector<int> choices = {7, 30, 365};
     // weights
-    std::vector<double> weights = {0.3, 0.5, 0.2};
+    static std::vector<double> weights = {0.3, 0.5, 0.2};
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    double r = (double)rand() / RAND_MAX;
 
-    std::discrete_distribution<> dist(weights.begin(), weights.end());
+    double cumulative = 0.0;
+    for (size_t i = 0; i < weights.size(); ++i) {
+        cumulative += weights[i];
+        if (r < cumulative) {
+            return choices[i];
+        }
+    }
 
-    int picked = choices[dist(gen)];
-    return picked;
+    return choices.back();
 }

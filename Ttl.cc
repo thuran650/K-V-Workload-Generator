@@ -5,7 +5,7 @@
 int ttl_generator() {
 
     // ttl choices
-    std::vector<int> choices = {7, 30, 365};
+    std::vector<int> choices = {1000, 2000, 3000};
     // weights
     std::vector<double> weights = {0.3, 0.5, 0.2};
 

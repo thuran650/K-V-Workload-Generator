@@ -395,7 +395,6 @@ void generate_workload() {
             
         }
         else if (choice == 7) { // POINT DELETE
-            std::cout << "We got choice" << choice << std::endl;
             // the following if block ensures that all updates are completed before a database is emptied ( in cases where insert_count == point_delete_ttl_count)
             if (insert_count == point_delete_ttl_count && _insert_count == insert_count && _point_delete_ttl_count == point_delete_ttl_count - 1 && _update_count < update_count ) {
                 std::cout << "pausing delete to facilitate all remaining updates ... " << std::endl;
@@ -418,7 +417,6 @@ void generate_workload() {
                     delete existingPointLookupIndexGenerator;
                     existingPointLookupIndexGenerator = new Generator(existing_point_lookup_dist, 0, insert_pool.size() - 1, existing_point_lookup_norm_mean_percentile*insert_pool.size(), existing_point_lookup_norm_stddev*insert_pool.size()/scaling_ratio, existing_point_lookup_beta_alpha, existing_point_lookup_beta_beta, existing_point_lookup_zipf_alpha, insert_pool.size(), index_mapping);
                 }
-                std::cout << "We got to this block"<< std::endl;
                 int ttl = ttl_generator();
                 fp << "DT " << key << " " << ttl << std::endl;
                 _point_delete_ttl_count++;
@@ -765,7 +763,6 @@ int get_choice(long insert_pool_size, long insert_count, long update_count, long
     // std::cout << "choice = " << choice << std::endl;
     switch (choice) {
         case 7: 
-            std::cout << "got to 7";
             if (_point_delete_ttl_count < point_delete_ttl_count && insert_pool_size > 0 && _insert_count >= PD_THRESHOLD * insert_count &&
 			    !(insert_pool_size == 1 && (_update_count < update_count || _point_query_count < point_query_count || (_range_query_count < range_query_count && range_query_selectivity > 0.0) ))) 
                 break;

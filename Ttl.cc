@@ -1,12 +1,21 @@
 #include <vector>
 #include <random>
 
-int ttl_generator() {
-    static std::mt19937 gen(422); 
+int ttl_generator(long total_ttl_deletes) {
+    static std::vector<int> choices = {88, 137, 275};
     
-    static std::vector<int> choices = {7, 30, 365};
-    
-    static std::discrete_distribution<size_t> dist({0.3, 0.5, 0.2});
+    static std::discrete_distribution<size_t> dist({0.1, 0.3, 0.6});
 
-    return choices[dist(gen)];
+    static long generated = 0;
+    long current = generated++;
+    auto probabilities = dist.probabilities();
+    double cumulative = 0;
+    for (size_t i = 0; i + 1 < choices.size(); i++) {
+        cumulative += probabilities[i];
+        if (current < total_ttl_deletes * cumulative) {
+            return choices[i];
+        }
+    }
+
+    return choices.back();
 }

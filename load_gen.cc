@@ -417,7 +417,7 @@ void generate_workload() {
                     delete existingPointLookupIndexGenerator;
                     existingPointLookupIndexGenerator = new Generator(existing_point_lookup_dist, 0, insert_pool.size() - 1, existing_point_lookup_norm_mean_percentile*insert_pool.size(), existing_point_lookup_norm_stddev*insert_pool.size()/scaling_ratio, existing_point_lookup_beta_alpha, existing_point_lookup_beta_beta, existing_point_lookup_zipf_alpha, insert_pool.size(), index_mapping);
                 }
-                int ttl = ttl_generator();
+                int ttl = ttl_generator(point_delete_ttl_count);
                 fp << "T " << key << " " << ttl << std::endl;
                 _point_delete_ttl_count++;
                 _effective_ingestion_count--;

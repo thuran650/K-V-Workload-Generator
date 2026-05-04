@@ -3,8 +3,11 @@ mkdir experiments
 cd experiments
 mkdir lethe
 mkdir rocksdb
+mkdir mixed
 
 cd lethe
+mkdir 16%
+cd 16%
 mkdir 10
 mkdir 8
 mkdir 6
@@ -22,27 +25,37 @@ mkdir 4
 mkdir 2
 mkdir 0
 
+cd ..
+
+cd mixed
+mkdir 10
+mkdir 8
+mkdir 6
+mkdir 4
+mkdir 2
+mkdir 0
+
 cd "$BASE_DIR"
 make
 
 # LETHE
 ./load_gen -I 450000 -T 50000 -E 1024 
-cp workload.txt experiments/lethe/10
+cp workload.txt experiments/lethe/16%/10
 
 ./load_gen -I 460000 -T 40000 -E 1024 
-cp workload.txt experiments/lethe/8
+cp workload.txt experiments/lethe/16%/8
 
 ./load_gen -I 470000 -T 30000 -E 1024 
-cp workload.txt experiments/lethe/6
+cp workload.txt experiments/lethe/16%/6
 
 ./load_gen -I 480000 -T 20000 -E 1024 
-cp workload.txt experiments/lethe/4
+cp workload.txt experiments/lethe/16%/4
 
 ./load_gen -I 490000 -T 10000 -E 1024 
-cp workload.txt experiments/lethe/2
+cp workload.txt experiments/lethe/16%/2
 
 ./load_gen -I 500000 -E 1024 
-cp workload.txt experiments/lethe/0
+cp workload.txt experiments/lethe/16%/0
 
 
 # ROCKS
@@ -63,3 +76,24 @@ cp workload.txt experiments/rocksdb/2
 
 ./load_gen -I 500000 -E 1024 
 cp workload.txt experiments/rocksdb/0
+
+
+# # MIXED
+# # modify ttl ratios before running this
+# ./load_gen -I 450000 -T 50000 -E 1024 
+# cp workload.txt experiments/mixed/10
+
+# ./load_gen -I 460000 -T 40000 -E 1024 
+# cp workload.txt experiments/mixed/8
+
+# ./load_gen -I 470000 -T 30000 -E 1024 
+# cp workload.txt experiments/mixed/6
+
+# ./load_gen -I 480000 -T 20000 -E 1024 
+# cp workload.txt experiments/mixed/4
+
+# ./load_gen -I 490000 -T 10000 -E 1024 
+# cp workload.txt experiments/mixed/2
+
+# ./load_gen -I 500000 -E 1024 
+# cp workload.txt experiments/mixed/0

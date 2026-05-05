@@ -1,5 +1,7 @@
 # K-V-Workload-Generator
 
+This repo is now seeded to generate the same workload deterministicly
+
 This repository maintains a key-value workload generator that supports different distributions (uniform, normal and zipfian) with customized parameters for inserts, updates and point queries. Other parameters such as zero-result point lookup ratio, range lookup selectivty can be also specified. Run `make` and you will have an executable file 'load_gen' which receives the following parameters:
 
   ./load_gen {OPTIONS}
@@ -12,6 +14,7 @@ This repository maintains a key-value workload generator that supports different
         -I[I], --insert=[I]               Number of inserts [def: 1]
         -U[U], --update=[U]               Number of updates [def: 0]
         -D[D], --point_delete=[D]         Number of point deletes [def: 0]
+        -T[T], --ttl_delete=[T]           Number of TTL-aware deletes
         -R[R], --range_delete=[R]         Number of range deletes [def: 0]
         -y[y],
         --range_delete_selectivity=[y]    Range delete selectivity [def: 0]

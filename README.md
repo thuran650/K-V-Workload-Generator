@@ -119,3 +119,31 @@ This repository maintains a key-value workload generator that supports different
         --ZD_ZALPHA=[ZD_Zipf_Alpha],
         --non_existing_point_lookup_distribution_zipf_alpha=[ZD_Zipf_Alpha]
                                           , def: 1.0]
+
+
+generate_experiment.sh creates the workload required for the Charon Paper
+
+It creates three folders 1. rockdb 2. lethe 3. charon. Within each folder, there are subfolders, 0,2,4,6,8,10, which are varying percentages of deletes in the total workload.
+
+Lethe and Charon workloads have to be generated seperated and follow these instructions.
+
+### In order to generate Lethe workloads
+
+Set these options in Ttl.cc.
+
+  Set one of the choices to desired static TTL and set the distribution to 1.0, so that every TTL generated is the value
+  
+  static std::vector<int> choices = {88, 137, 275};
+  static std::discrete_distribution<size_t> dist({1.0, 0, 0});
+
+### In order to generate Charon workloads
+
+Set these options in Ttl.cc.
+
+  Set choices for desired static TTL, which are varying data deletion thresholds times
+  Set the distribution of the TTL to the ratios you want the TTLs to be generated with
+  
+  static std::vector<int> choices = {88, 137, 275};
+  static std::discrete_distribution<size_t> dist({0.1, 0.3, 0.6});
+
+This script generates the exact folder structure that is required to run the experiments in Charon.

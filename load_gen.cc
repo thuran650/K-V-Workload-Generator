@@ -417,8 +417,8 @@ void generate_workload() {
                     delete existingPointLookupIndexGenerator;
                     existingPointLookupIndexGenerator = new Generator(existing_point_lookup_dist, 0, insert_pool.size() - 1, existing_point_lookup_norm_mean_percentile*insert_pool.size(), existing_point_lookup_norm_stddev*insert_pool.size()/scaling_ratio, existing_point_lookup_beta_alpha, existing_point_lookup_beta_beta, existing_point_lookup_zipf_alpha, insert_pool.size(), index_mapping);
                 }
-                int ttl = ttl_generator();
-                fp << "DT " << key << " " << ttl << std::endl;
+                int ttl = ttl_generator(point_delete_ttl_count);
+                fp << "T " << key << " " << ttl << std::endl;
                 _point_delete_ttl_count++;
                 _effective_ingestion_count--;
                 _total_operation_count++;
@@ -879,7 +879,7 @@ int parse_arguments2(int argc, char *argv[]) {
   args::ValueFlag<long> insert_cmd(group1, "I", "Number of inserts [def: 0]", {'I', "insert"});
   args::ValueFlag<long> update_cmd(group1, "U", "Number of updates [def: 0]", {'U', "update"});
   args::ValueFlag<long> point_delete_cmd(group1, "D", "Number of point deletes [def: 0]", {'D', "point_delete"});
-  args::ValueFlag<long> point_delete_ttl_cmd(group1, "DT", "Number of point deletes w/ TTL [def: 0]", {"DT", "point_delete_ttl"});
+  args::ValueFlag<long> point_delete_ttl_cmd(group1, "T", "Number of point deletes w/ TTL [def: 0]", {'T', "point_delete_ttl"});
   args::ValueFlag<long> range_delete_cmd(group1, "R", "Number of range deletes [def: 0]", {'R', "range_delete"});
   args::ValueFlag<float> range_delete_selectivity_cmd(group1, "y", "Range delete selectivity [def: 0]", {'y', "range_delete_selectivity"});
   args::ValueFlag<long> point_query_cmd(group1, "Q", "Number of point queries [def: 0]", {'Q', "point_query"});

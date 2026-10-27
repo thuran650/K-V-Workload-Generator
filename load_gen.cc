@@ -27,6 +27,8 @@
 #define RQ_THRESHOLD 0.1 // RQ_THRESHOLD*insert_count number of inserts must be made before Range Queries may take place (applicable when an empty database is being populated)
 #define STRING_KEY_ENABLED true
 #define FILENAME "workload.txt"
+#define SQL_FILENAME "sql_workload.txt"
+
 
 // using namespace std;
 
@@ -96,6 +98,7 @@ Generator* existingPointLookupIndexGenerator = nullptr;
 int parse_arguments2(int argc, char *argv[]);
 int get_choice(long, long, long, long, long, long, long, long, long, long, long, long, long, long, long, double, double);
 void generate_workload();
+void generate_sql_workload();
 void print_workload_parameters(int _insert_count, int _update_count, int _point_delete_count, int _point_delete_ttl_count, int  _range_delete_count,int _effective_ingestion_count);
 std::string get_value(int _value_size);
 inline void showProgress(const uint32_t &total_ops, const uint32_t &current_ops);
@@ -845,6 +848,7 @@ int main(int argc, char *argv[]) {
 
     
     generate_workload();
+    generate_sql_workload();
 
     // std::cout << "End of main() ..." << std::endl;
 
@@ -1086,4 +1090,38 @@ inline void showProgress(const uint32_t &total, const uint32_t &current) {
 
     // If complete, add a newline
     if (current >= total) std::cout << std::endl;
+}
+
+void generate_sql_workload(void) {
+    FILE *in = fopen(FILENAME, "rb");
+    FILE *out = fopen("sql_workload.txt", "w");
+
+    if (!in || !out) {perror("fopen"); return;};
+
+    char line[1000];
+
+    while (fgets(line, sizeof line, in)) {
+        char *op  = strtok(line, " \t\r\n");
+        char *key = strtok(NULL, " \t\r\n");
+        char *val = strtok(NULL, " \t\r\n");
+        if (!op) continue; 
+
+    if (strcmp(op, "I") == 0 && val)
+            fprintf(out, "INSERT INTO kv (key, value) VALUES ('%s', '%s');\n", key, val);
+    
+    else if (strcmp(op, "D") == 0 && key)
+            fprintf(out, "DELETE FROM kv WHERE key = '%s';\n", key);
+
+    else if (strcmp(op, "T") == 0 && val)
+            fprintf(out, "DELETE FROM kv WHERE key = '%s' AND dpt = %s;\n", key, val);
+
+    else if (strcmp(op, "U") == 0 && val)
+            fprintf(out, "UPDATE kv SET value = '%s' WHERE key = '%s';\n", val, key);
+        
+        
+    }
+    fclose(in);
+    fclose(out);
+    return;
+
 }

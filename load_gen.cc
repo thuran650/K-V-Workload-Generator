@@ -1106,15 +1106,16 @@ void generate_sql_workload(void) {
         char *val = strtok(NULL, " \t\r\n");
         if (!op) continue; 
 
+    // inserts
     if (strcmp(op, "I") == 0 && val)
             fprintf(out, "INSERT INTO kv (key, value) VALUES ('%s', '%s');\n", key, val);
-    
+    // deletes
     else if (strcmp(op, "D") == 0 && key)
             fprintf(out, "DELETE FROM kv WHERE key = '%s';\n", key);
-
+    // ttl deletes
     else if (strcmp(op, "T") == 0 && val)
-            fprintf(out, "DELETE FROM kv WHERE key = '%s' AND dpt = %s;\n", key, val);
-
+            fprintf(out, "DELETE FROM kv WHERE key = '%s' WITH dpt = %s;\n", key, val);
+    // updates
     else if (strcmp(op, "U") == 0 && val)
             fprintf(out, "UPDATE kv SET value = '%s' WHERE key = '%s';\n", val, key);
         
